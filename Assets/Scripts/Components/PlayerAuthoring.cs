@@ -7,6 +7,7 @@ using Unity.Mathematics;
 public class PlayerAuthoring : MonoBehaviour
 {
     public float speed = 5.0f;
+    public float angularSpeed = 100.0f;
 
     private class Baker : Baker<PlayerAuthoring>
     {
@@ -15,7 +16,8 @@ public class PlayerAuthoring : MonoBehaviour
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new CharacterComponent
             {
-                speed = authoring.speed
+                speed = authoring.speed,
+                rotationSpeed = authoring.angularSpeed,
             });
         }
     }
@@ -24,4 +26,5 @@ public class PlayerAuthoring : MonoBehaviour
 public struct CharacterComponent : IComponentData
 {
     public float speed;
+    public float rotationSpeed;
 }
