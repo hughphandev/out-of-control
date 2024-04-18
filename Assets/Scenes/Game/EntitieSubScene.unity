@@ -170,7 +170,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02358a7c73bea4440881c2f8f49c25a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  mover:
+    canMove: 1
+    canRotate: 1
+    rotateSpeed: 360
+    horizontalAccelaration: 100
+    friction: 25
 --- !u!54 &27361720
 Rigidbody:
   m_ObjectHideFlags: 0

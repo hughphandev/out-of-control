@@ -5,43 +5,52 @@ using UnityEngine;
 using Unity.Physics;
 using UnityEngine.InputSystem;
 
-[UpdateInGroup(typeof(SimulationSystemGroup))]
+[UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 public partial class PlayerSystem : SystemBase
 {
     private Controls controls = null;
-    private float holdTime;
 
     protected override void OnCreate()
     {
         controls = new Controls();
         controls.Enable();
-        controls.Character.Move.started += MoveStarted;
     }
 
     protected override void OnDestroy()
     {
         controls = new Controls();
-        controls.Enable();
-        controls.Character.Move.started += MoveStarted;
+        controls.Disable();
     }
 
     protected override void OnUpdate()
     {
-        foreach (var (player, transform, velocity) in SystemAPI.Query<RefRO<CharacterComponent>, RefRW<LocalTransform>, RefRW<PhysicsVelocity>>())
+        foreach (var (mover, transform, velocity) in SystemAPI.Query<RefRW<MoverComponent>, RefRW<LocalTransform>, RefRW<PhysicsVelocity>>())
         {
-            holdTime += SystemAPI.Time.DeltaTime * player.ValueRO.rotationSpeed;
-            float2 move = controls.Character.Move.ReadValue<Vector2>().normalized;
-            if (move.x != 0 || move.y != 0)
+            float2 inputDirection = controls.Character.Move.ReadValue<Vector2>().normalized;
+
+            float3 accelaration = Vector3.zero;
+            accelaration.x = inputDirection.x * mover.ValueRO.horizontalAccelaration;
+            accelaration.z = inputDirection.y * mover.ValueRO.horizontalAccelaration;
+
+            //TODO: ODE!
+            accelaration.x -= velocity.ValueRO.Linear.x * mover.ValueRO.friction;
+            accelaration.z -= velocity.ValueRO.Linear.z * mover.ValueRO.friction;
+
+            Cursor.lockState = CursorLockMode.None;
+            if (mover.ValueRO.canRotate && !inputDirection.Equals(float2.zero))
             {
-                transform.ValueRW.Rotation = math.slerp(transform.ValueRO.Rotation, quaternion.LookRotationSafe(new float3(move.x, 0, move.y), new float3() { y = 1 }), holdTime);
+                float angle = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg;
+                Debug.Log($"Angle: {inputDirection}");
+                transform.ValueRW.Rotation = Quaternion.RotateTowards(transform.ValueRO.Rotation, Quaternion.Euler(0.0f, angle, 0.0f), mover.ValueRO.rotateSpeed * SystemAPI.Time.DeltaTime);
             }
 
-            velocity.ValueRW.Linear = new float3(player.ValueRO.speed * move.x, 0.0f, player.ValueRO.speed * move.y);
+            if (mover.ValueRO.canMove)
+            {
+                // Vector3 deltaP = (velocity.ValueRO.Linear + accelaration * SystemAPI.Time.DeltaTime * .5f) * SystemAPI.Time.DeltaTime;
+                // controller.Move(deltaP);
+                velocity.ValueRW.Linear += SystemAPI.Time.DeltaTime * accelaration;
+            }
         }
-    }
 
-    private void MoveStarted(InputAction.CallbackContext context)
-    {
-        holdTime = 0;
     }
 }

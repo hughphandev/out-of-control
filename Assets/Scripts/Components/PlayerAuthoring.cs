@@ -3,28 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
 using Unity.Mathematics;
+using System;
 
 public class PlayerAuthoring : MonoBehaviour
 {
-    public float speed = 5.0f;
-    public float angularSpeed = 100.0f;
+    public MoverComponent mover = new MoverComponent
+    {
+        canMove = true,
+        canRotate = true,
+    };
 
     private class Baker : Baker<PlayerAuthoring>
     {
         public override void Bake(PlayerAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponent(entity, new CharacterComponent
-            {
-                speed = authoring.speed,
-                rotationSpeed = authoring.angularSpeed,
-            });
+            AddComponent(entity, authoring.mover);
         }
     }
 }
 
-public struct CharacterComponent : IComponentData
+[Serializable]
+public struct MoverComponent : IComponentData
 {
-    public float speed;
-    public float rotationSpeed;
+    public bool canMove;
+    public bool canRotate;
+    public float rotateSpeed;
+    public float horizontalAccelaration;
+    public float friction;
 }
