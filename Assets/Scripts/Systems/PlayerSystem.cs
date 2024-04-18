@@ -40,14 +40,11 @@ public partial class PlayerSystem : SystemBase
             if (mover.ValueRO.canRotate && !inputDirection.Equals(float2.zero))
             {
                 float angle = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg;
-                Debug.Log($"Angle: {inputDirection}");
                 transform.ValueRW.Rotation = Quaternion.RotateTowards(transform.ValueRO.Rotation, Quaternion.Euler(0.0f, angle, 0.0f), mover.ValueRO.rotateSpeed * SystemAPI.Time.DeltaTime);
             }
 
             if (mover.ValueRO.canMove)
             {
-                // Vector3 deltaP = (velocity.ValueRO.Linear + accelaration * SystemAPI.Time.DeltaTime * .5f) * SystemAPI.Time.DeltaTime;
-                // controller.Move(deltaP);
                 velocity.ValueRW.Linear += SystemAPI.Time.DeltaTime * accelaration;
             }
         }
