@@ -6,7 +6,7 @@ using Unity.Physics;
 using UnityEngine.InputSystem;
 
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
-public partial class PlayerSystem : SystemBase
+public partial class PlayerMovementSystem : SystemBase
 {
     private Controls controls = null;
 

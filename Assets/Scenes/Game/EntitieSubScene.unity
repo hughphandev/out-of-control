@@ -133,6 +133,8 @@ GameObject:
   m_Component:
   - component: {fileID: 27361718}
   - component: {fileID: 27361719}
+  - component: {fileID: 27361722}
+  - component: {fileID: 27361723}
   - component: {fileID: 27361720}
   - component: {fileID: 27361721}
   m_Layer: 0
@@ -170,12 +172,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02358a7c73bea4440881c2f8f49c25a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mover:
-    canMove: 1
-    canRotate: 1
-    rotateSpeed: 360
-    horizontalAccelaration: 100
-    friction: 25
+  InfoArray:
+    ComponentArray:
+    - AuthoringData:
+        damageMask:
+          serializedVersion: 2
+          m_Bits: 0
+        targetPosition:
+          x: 0
+          y: 0
+          z: 0
+        currentAbility:
+          tag: 0
+          coolDown: 0
+          damage: 0
+          shield: 0
+          projectileCount: 0
+          chainCount: 0
+          lifeTime: 0
+          range: 0
+          parent: 0
+          allowAnimation: 0
+          autoAim: 0
+          animationProperty: 0
+          destroy: 0
+          spawnLocation: 0
+          elemental: 0
+          hitboxShape: 0
+          hitboxSize: {x: 0, y: 0, z: 0}
+          velocity: {x: 0, y: 0, z: 0}
+          offset: {x: 0, y: 0, z: 0}
+          spawnOnDestroySize: {x: 0, y: 0, z: 0}
+          spawnOnDestroyDamage: 0
+        abilityCooldown: 0
+      References:
+      - {fileID: 2043014206034534224, guid: 9fb01b83e48d7c44997c17155f09b92a, type: 3}
 --- !u!54 &27361720
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -226,6 +257,49 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &27361722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27361717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e821b5cae5fe42344b78fc2ca3b649a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InfoArray:
+    ComponentArray:
+    - AuthoringData:
+        canMove: 1
+        canRotate: 1
+        rotateSpeed: 360
+        horizontalAccelaration: 100
+        friction: 10
+      References: []
+--- !u!114 &27361723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27361717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad68c3fbd5c28a40912fd0c7266435f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InfoArray:
+    ComponentArray:
+    - AuthoringData:
+        hp: 0
+        shield: 0
+        hpRecovery: 0
+        experienceDrop: 0
+        pickUpRange: 0
+        attackSpeedMultiplier: 0
+      References: []
 --- !u!1 &39798342
 GameObject:
   m_ObjectHideFlags: 0
