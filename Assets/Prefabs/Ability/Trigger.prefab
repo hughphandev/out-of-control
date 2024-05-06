@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2043014206034534224
+--- !u!1 &5752708556412595559
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,12 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8158276165656780440}
-  - component: {fileID: 928118443248660829}
-  - component: {fileID: 3962511065662227528}
-  - component: {fileID: 6992798621557880302}
-  - component: {fileID: 2647241249713806207}
-  - component: {fileID: -5200333915824289257}
+  - component: {fileID: 2101111823801759124}
+  - component: {fileID: 3597114021124652779}
+  - component: {fileID: 969974287824298326}
+  - component: {fileID: 3323893702925350399}
+  - component: {fileID: 369605698546788471}
   m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
@@ -21,36 +20,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8158276165656780440
+--- !u!4 &2101111823801759124
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043014206034534224}
+  m_GameObject: {fileID: 5752708556412595559}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.65, y: 5.16, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &928118443248660829
+--- !u!33 &3597114021124652779
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043014206034534224}
+  m_GameObject: {fileID: 5752708556412595559}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &3962511065662227528
+--- !u!23 &969974287824298326
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043014206034534224}
+  m_GameObject: {fileID: 5752708556412595559}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -86,13 +85,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6992798621557880302
+--- !u!135 &3323893702925350399
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043014206034534224}
+  m_GameObject: {fileID: 5752708556412595559}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -107,13 +106,13 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2647241249713806207
+--- !u!114 &369605698546788471
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043014206034534224}
+  m_GameObject: {fileID: 5752708556412595559}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7d8267f034aeb740b516deedce13db8, type: 3}
@@ -144,32 +143,11 @@ MonoBehaviour:
           elemental: 0
           hitboxShape: 0
           hitboxSize: {x: 0, y: 0, z: 0}
-          velocity: {x: 0, y: 0, z: 0}
+          velocity:
+            x: 0
+            y: 0
+            z: 0
           offset: {x: 0, y: 0, z: 0}
           spawnOnDestroySize: {x: 0, y: 0, z: 0}
           spawnOnDestroyDamage: 0
       References: []
---- !u!114 &-5200333915824289257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043014206034534224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72ae1849d1807a24d8ab499e9f810f36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InfoArray:
-    ComponentArray:
-    - References:
-      - {fileID: 0}
-    - References:
-      - {fileID: 0}
-    - References:
-      - {fileID: 0}
-    - References:
-      - {fileID: 0}
-    - References:
-      - {fileID: 0}

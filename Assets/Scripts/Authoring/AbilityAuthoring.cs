@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using AutoAuthoring;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class AbilityAuthoring : AutoAuthoring<AbilityComponent> { }
@@ -28,10 +29,16 @@ public struct AbilityComponent : IComponentData
     public Elemental elemental;
     public HitboxShape hitboxShape;
     public Vector3 hitboxSize;
-    public Vector3 velocity;
+    public float3 velocity;
     public Vector3 offset;
     // public AudioClip soundEffect;
     // public AbilitySpawnable spawnOnDestroy;
     public Vector3 spawnOnDestroySize;
     public int spawnOnDestroyDamage;
+
+}
+
+public struct AbilityBufferElement : IBufferElementData
+{
+    public AbilityComponent value;
 }
