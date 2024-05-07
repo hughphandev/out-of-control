@@ -6,7 +6,7 @@ using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
 
-public partial struct AbilityTriggerSystem : ISystem
+public partial struct DelayedDestroySystem : ISystem
 {
     void OnCreate(ref SystemState state)
     {
@@ -21,11 +21,15 @@ public partial struct AbilityTriggerSystem : ISystem
     void OnUpdate(ref SystemState state)
     {
         var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
-        foreach ((var abilityTrigger, var transform) in SystemAPI.Query<RefRW<AbilityTriggerComponent>, RefRW<LocalTransform>>())
+        foreach (var component in SystemAPI.Query<RefRW<DelayedDestroyComponent>>())
         {
-            if (abilityTrigger.ValueRO.ability.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnOutOfRange) && math.distance(transform.ValueRO.Position, abilityTrigger.ValueRO.origin) > abilityTrigger.ValueRO.ability.range)
+            if (component.ValueRO.delay < 0)
             {
-                ecb.DestroyEntity(abilityTrigger.ValueRO.entity);
+                ecb.DestroyEntity(component.ValueRO.entity);
+            }
+            else
+            {
+                component.ValueRW.delay -= SystemAPI.Time.DeltaTime;
             }
         }
     }

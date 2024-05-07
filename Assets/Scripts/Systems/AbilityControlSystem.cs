@@ -25,30 +25,40 @@ public partial struct AbilityControlSystem : ISystem
             {
                 if (abilityControl.ValueRO.timer < 0)
                 {
-                    var entity = ecb.Instantiate(abilityControl.ValueRO.abilityTriggerPrefab);
+                    var currentAbility = abilityControl.ValueRO.currentAbility;
+                    var currentTriggerEntity = ecb.Instantiate(abilityControl.ValueRO.abilityTriggerPrefab);
                     var attackL2W = state.EntityManager.GetComponentData<LocalToWorld>(abilityControl.ValueRO.attackTransform);
-                    ecb.SetComponent(entity, new AbilityTriggerComponent()
+                    ecb.SetComponent(currentTriggerEntity, new AbilityTriggerComponent()
                     {
-                        ability = abilityControl.ValueRO.currentAbility,
+                        entity = currentTriggerEntity,
+                        ability = currentAbility,
                         mask = abilityControl.ValueRO.damageMask,
                         origin = attackL2W.Position,
                     });
 
-                    ecb.SetComponent(entity, new LocalTransform()
+                    ecb.SetComponent(currentTriggerEntity, new LocalTransform()
                     {
                         Position = attackL2W.Position,
                         Rotation = quaternion.identity,
                         Scale = 1,
                     });
 
-                    if (!abilityControl.ValueRO.currentAbility.velocity.Equals(float3.zero))
+                    if (!currentAbility.velocity.Equals(float3.zero))
                     {
-                        ecb.AddComponent(entity, new PhysicsVelocity()
+                        ecb.AddComponent(currentTriggerEntity, new PhysicsVelocity()
                         {
                             Linear = math.mul(attackL2W.Rotation, abilityControl.ValueRO.currentAbility.velocity)
                         });
                     }
 
+                    if (currentAbility.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnLifeTimeEnd))
+                    {
+                        ecb.AddComponent(currentTriggerEntity, new DelayedDestroyComponent()
+                        {
+                            entity = currentTriggerEntity,
+                            delay = currentAbility.lifeTime,
+                        });
+                    }
 
                     abilityControl.ValueRW.timer = abilityControl.ValueRO.currentAbility.coolDown;
                 }

@@ -184,13 +184,13 @@ MonoBehaviour:
     shield: 0
     projectileCount: 1
     chainCount: 0
-    lifeTime: 0
-    range: 0
+    lifeTime: 0.5
+    range: 100
     parent: 0
     allowAnimation: 0
     autoAim: 0
     animationProperty: 0
-    destroy: 0
+    destroyFlag: 12
     spawnLocation: 0
     elemental: 0
     hitboxShape: 0
@@ -198,7 +198,7 @@ MonoBehaviour:
     velocity:
       x: 0
       y: 0
-      z: 10
+      z: 20
     offset: {x: 0, y: 0, z: 0}
     spawnOnDestroySize: {x: 0, y: 0, z: 0}
     spawnOnDestroyDamage: 0

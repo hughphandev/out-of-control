@@ -24,7 +24,7 @@ public struct AbilityComponent : IComponentData
     public bool autoAim;
     // public AnimationClip animation;
     public AnimationProperty animationProperty;
-    public AbilityDestroy destroy;
+    public AbilityDestroyFlag destroyFlag;
     public AbilitySpawnLocation spawnLocation;
     public Elemental elemental;
     public HitboxShape hitboxShape;

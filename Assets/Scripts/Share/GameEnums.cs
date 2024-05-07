@@ -7,7 +7,7 @@ public enum HitboxShape
 }
 
 [Flags]
-public enum AbilityDestroy
+public enum AbilityDestroyFlag
 {
     OnHit = 1 << 0,
     OnAnimationEnd = 1 << 1,
