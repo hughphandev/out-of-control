@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2101111823801759124}
   - component: {fileID: 3597114021124652779}
   - component: {fileID: 969974287824298326}
-  - component: {fileID: 3323893702925350399}
   - component: {fileID: 369605698546788471}
   m_Layer: 0
   m_Name: Trigger
@@ -85,27 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &3323893702925350399
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5752708556412595559}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &369605698546788471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,36 +96,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d8267f034aeb740b516deedce13db8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InfoArray:
-    ComponentArray:
-    - AuthoringData:
-        mask:
-          serializedVersion: 2
-          m_Bits: 0
-        origin: {x: 0, y: 0, z: 0}
-        ability:
-          tag: 0
-          coolDown: 0
-          damage: 0
-          shield: 0
-          projectileCount: 0
-          chainCount: 0
-          lifeTime: 0
-          range: 0
-          parent: 0
-          allowAnimation: 0
-          autoAim: 0
-          animationProperty: 0
-          destroy: 0
-          spawnLocation: 0
-          elemental: 0
-          hitboxShape: 0
-          hitboxSize: {x: 0, y: 0, z: 0}
-          velocity:
-            x: 0
-            y: 0
-            z: 0
-          offset: {x: 0, y: 0, z: 0}
-          spawnOnDestroySize: {x: 0, y: 0, z: 0}
-          spawnOnDestroyDamage: 0
-      References: []

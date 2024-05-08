@@ -47,7 +47,7 @@ public partial struct AbilityControlSystem : ISystem
                     {
                         ecb.AddComponent(currentTriggerEntity, new PhysicsVelocity()
                         {
-                            Linear = math.mul(attackL2W.Rotation, abilityControl.ValueRO.currentAbility.velocity)
+                            Linear = math.mul(attackL2W.Rotation, currentAbility.velocity)
                         });
                     }
 
@@ -60,7 +60,7 @@ public partial struct AbilityControlSystem : ISystem
                         });
                     }
 
-                    abilityControl.ValueRW.timer = abilityControl.ValueRO.currentAbility.coolDown;
+                    abilityControl.ValueRW.timer = currentAbility.coolDown;
                 }
             }
 

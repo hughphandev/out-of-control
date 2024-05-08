@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using Unity.Physics;
 using UnityEngine;
 
 public static class Utils
@@ -9,6 +9,15 @@ public static class Utils
     public static bool OverlapFlag(this Enum first, Enum second)
     {
         return (Convert.ToInt32(first) & Convert.ToInt32(second)) != 0;
+    }
+    public static CollisionFilter LayerMaskToFilter(LayerMask belongMask, LayerMask collideMask)
+    {
+        CollisionFilter filter = new CollisionFilter()
+        {
+            BelongsTo = (uint)collideMask.value,
+            CollidesWith = (uint)collideMask.value
+        };
+        return filter;
     }
 }
 
