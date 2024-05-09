@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using AutoAuthoring;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Physics;
 using UnityEngine;
 
 public class AbilityTriggerAuthoring : MonoBehaviour
@@ -21,7 +22,6 @@ public class AbilityTriggerAuthoring : MonoBehaviour
 [Serializable]
 public struct AbilityTriggerComponent : IComponentData
 {
-    public Entity entity;
     public LayerMask mask;
     public float3 origin;
     public AbilityComponent ability;

@@ -25,12 +25,12 @@ public partial struct AbilityTriggerSystem : ISystem
     {
         var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
         var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
-        foreach ((var abilityTrigger, var transform) in SystemAPI.Query<RefRW<AbilityTriggerComponent>, RefRW<LocalTransform>>())
+        foreach ((var abilityTrigger, var transform, var entity) in SystemAPI.Query<RefRO<AbilityTriggerComponent>, RefRO<LocalTransform>>().WithEntityAccess())
         {
             AbilityComponent ability = abilityTrigger.ValueRO.ability;
             if (ability.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnOutOfRange) && math.distance(transform.ValueRO.Position, abilityTrigger.ValueRO.origin) > ability.range)
             {
-                ecb.DestroyEntity(abilityTrigger.ValueRO.entity);
+                ecb.DestroyEntity(entity);
             }
 
             if (ability.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnHit))
@@ -53,10 +53,16 @@ public partial struct AbilityTriggerSystem : ISystem
                 }
                 if (hits.Length > 0)
                 {
-                    Debug.Log("Length: " + hits.Length);
-                    Debug.Log("Belong to: " + abilityTrigger.ValueRO.mask.value);
-
-                    ecb.DestroyEntity(abilityTrigger.ValueRO.entity);
+                    ecb.DestroyEntity(entity);
+                    foreach (var hit in hits)
+                    {
+                        if (SystemAPI.HasComponent<CharacterResourceComponent>(hit.Entity))
+                        {
+                            var resource = SystemAPI.GetComponent<CharacterResourceComponent>(hit.Entity);
+                            resource.TakeDamage(ability.damage, ability.elemental);
+                            ecb.SetComponent<CharacterResourceComponent>(hit.Entity, resource);
+                        }
+                    }
                 }
             }
         }

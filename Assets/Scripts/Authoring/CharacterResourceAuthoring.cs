@@ -10,14 +10,12 @@ public class CharacterResourceAuthoring : AutoAuthoring<CharacterResourceCompone
 [Serializable]
 public struct CharacterResourceComponent : IComponentData
 {
-    public int hp;
-    public int shield;
-    public int hpRecovery;
+    public float hp;
+    public float shield;
+    public float hpRecovery;
     public int experienceDrop;
     public float pickUpRange;
     public float attackSpeedMultiplier;
-
-
 
     public static CharacterResourceComponent operator +(CharacterResourceComponent lhs, CharacterResourceComponent rhs)
     {
@@ -28,4 +26,5 @@ public struct CharacterResourceComponent : IComponentData
         result.pickUpRange = lhs.pickUpRange + rhs.pickUpRange;
         return result;
     }
+
 }

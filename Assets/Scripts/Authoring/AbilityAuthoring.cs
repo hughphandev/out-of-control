@@ -38,7 +38,13 @@ public struct AbilityComponent : IComponentData
 
 }
 
-public struct AbilityBufferElement : IBufferElementData
+public struct AbilityRuntimeBufferElement : IBufferElementData
 {
     public AbilityComponent value;
+    public float timer;
+
+    public AbilityRuntimeBufferElement(AbilityRuntimeBufferElement value)
+    {
+        this = value;
+    }
 }
