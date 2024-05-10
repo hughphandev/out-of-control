@@ -64,6 +64,7 @@ public partial struct AbilityTriggerSystem : ISystem
                         }
                     }
                 }
+                hits.Dispose();
             }
         }
     }

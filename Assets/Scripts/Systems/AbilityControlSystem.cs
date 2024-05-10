@@ -14,10 +14,10 @@ public partial struct AbilityControlSystem : ISystem
 
     void OnUpdate(ref SystemState state)
     {
-        foreach ((var abilityControl, var transform, var entity) in SystemAPI.Query<RefRW<AbilityControlComponent>, RefRW<LocalTransform>>().WithAll<AbilityRuntimeBufferElement>().WithEntityAccess())
+        foreach ((var abilityControl, var abilitiesBuffer, var transform) in SystemAPI.Query<RefRW<AbilityControlComponent>, DynamicBuffer<AbilityRuntimeBufferElement>, RefRW<LocalTransform>>())
         {
             var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
-            var abilities = SystemAPI.GetBuffer<AbilityRuntimeBufferElement>(entity);
+            var abilities = abilitiesBuffer;
             for (int i = 0; i < abilities.Length; i++)
             {
                 if (abilities[i].Equals(default)) continue;
@@ -68,7 +68,6 @@ public partial struct AbilityControlSystem : ISystem
                         timer = abilities[i].timer - SystemAPI.Time.DeltaTime,
                     };
                 }
-
             }
         }
     }

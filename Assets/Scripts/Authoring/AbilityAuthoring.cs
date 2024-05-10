@@ -20,10 +20,10 @@ public struct AbilityComponent : IComponentData
     public float lifeTime;
     public float range;
     public bool parent;
-    public bool allowAnimation;
+    // public bool allowAnimation;
     public bool autoAim;
     // public AnimationClip animation;
-    public AnimationProperty animationProperty;
+    // public AnimationProperty animationProperty;
     public AbilityDestroyFlag destroyFlag;
     public AbilitySpawnLocation spawnLocation;
     public Elemental elemental;
