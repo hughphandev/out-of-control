@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using ProjectDawn.Navigation;
 using Unity.Entities;
 using Unity.Physics;
 using Unity.Transforms;
 using Unity.Mathematics;
 using UnityEngine;
-using Unity.Collections;
 
 public partial struct EnemySystem : ISystem
 {
