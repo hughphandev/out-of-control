@@ -11,7 +11,7 @@ public class AbilityControlAuthoring : MonoBehaviour
 {
     public Transform attackTransform;
     public LayerMask damageMask;
-    public AbilityComponent currentAbility;
+    // public AbilityComponent currentAbility;
     public List<AbilityComponent> abilities = new List<AbilityComponent>();
     public GameObject abilityTriggerPrefab;
 
@@ -33,7 +33,7 @@ public class AbilityControlAuthoring : MonoBehaviour
             {
                 attackTransform = GetEntity(authoring.attackTransform.gameObject, TransformUsageFlags.Dynamic),
                 damageMask = authoring.damageMask,
-                currentAbility = new AbilityRuntimeBufferElement() { value = authoring.currentAbility },
+                // currentAbility = new AbilityRuntimeBufferElement() { value = authoring.currentAbility },
                 abilityTriggerPrefab = GetEntity(authoring.abilityTriggerPrefab, TransformUsageFlags.Dynamic),
             });
 
