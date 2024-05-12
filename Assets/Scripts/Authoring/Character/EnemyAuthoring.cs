@@ -18,7 +18,6 @@ public class EnemyAuthoring : MonoBehaviour
             AddComponent(entity, new EnemyComponent()
             {
                 movementSpeed = authoring.movementSpeed,
-                target = GetEntity(authoring.target, TransformUsageFlags.WorldSpace),
             });
         }
     }
