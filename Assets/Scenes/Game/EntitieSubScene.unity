@@ -183,7 +183,7 @@ MonoBehaviour:
     coolDown: 1
     damage: 1
     shield: 0
-    projectileCount: 1
+    projectileCount: 3
     chainCount: 0
     lifeTime: 0.5
     range: 20
@@ -198,52 +198,14 @@ MonoBehaviour:
       x: 0
       y: 0
       z: 20
-    offset: {x: 0, y: 0, z: 0}
-    spawnOnDestroySize: {x: 0, y: 0, z: 0}
-    spawnOnDestroyDamage: 0
-  - tag: 0
-    coolDown: 1
-    damage: 1
-    shield: 0
-    projectileCount: 1
-    chainCount: 0
-    lifeTime: 0.5
-    range: 20
-    parent: 0
-    autoAim: 0
-    destroyFlag: 9
-    spawnLocation: 0
-    elemental: 0
-    hitboxShape: 1
-    hitboxSize: {x: 1, y: 1, z: 1}
-    velocity:
-      x: 5
+    offset:
+      x: 0
       y: 0
-      z: 20
-    offset: {x: 0, y: 0, z: 0}
-    spawnOnDestroySize: {x: 0, y: 0, z: 0}
-    spawnOnDestroyDamage: 0
-  - tag: 0
-    coolDown: 1
-    damage: 1
-    shield: 0
-    projectileCount: 1
-    chainCount: 0
-    lifeTime: 0.5
-    range: 20
-    parent: 0
-    autoAim: 0
-    destroyFlag: 9
-    spawnLocation: 0
-    elemental: 0
-    hitboxShape: 1
-    hitboxSize: {x: 1, y: 1, z: 1}
-    velocity:
-      x: -5
+      z: 0
+    spawnOnDestroySize:
+      x: 0
       y: 0
-      z: 20
-    offset: {x: 0, y: 0, z: 0}
-    spawnOnDestroySize: {x: 0, y: 0, z: 0}
+      z: 0
     spawnOnDestroyDamage: 0
   abilityTriggerPrefab: {fileID: 5752708556412595559, guid: 6cff34366fd9ea142a39aff8122467ba,
     type: 3}
@@ -533,7 +495,7 @@ GameObject:
   - component: {fileID: 179289105}
   - component: {fileID: 179289104}
   m_Layer: 0
-  m_Name: PhysicsDebug
+  m_Name: Debug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

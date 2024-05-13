@@ -9,7 +9,7 @@ public partial struct EnemySystem : ISystem
     void OnUpdate(ref SystemState state)
     {
         var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
-        foreach ((var localTransform, var enemy, var buffer, var velocity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<EnemyComponent>, DynamicBuffer<AbilityRuntimeBufferElement>, RefRW<PhysicsVelocity>>())
+        foreach ((var localTransform, var enemy, var buffer, var velocity, var entity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<EnemyComponent>, DynamicBuffer<AbilityRuntimeBufferElement>, RefRW<PhysicsVelocity>>().WithEntityAccess())
         {
             var abilities = buffer;
             if (abilities.Length > 0)
@@ -26,10 +26,12 @@ public partial struct EnemySystem : ISystem
                 if (math.distance(playerTrans.Position, localTransform.ValueRO.Position) > range)
                 {
                     velocity.ValueRW.Linear = dir * enemy.ValueRO.movementSpeed;
+                    SystemAPI.SetComponentEnabled<AbilityControlComponent>(entity, false);
                 }
                 else
                 {
                     velocity.ValueRW.Linear = float3.zero;
+                    SystemAPI.SetComponentEnabled<AbilityControlComponent>(entity, true);
                 }
             }
         }

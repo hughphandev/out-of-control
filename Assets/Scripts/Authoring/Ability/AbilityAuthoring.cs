@@ -30,10 +30,10 @@ public struct AbilityComponent : IComponentData
     public HitboxShape hitboxShape;
     public Vector3 hitboxSize;
     public float3 velocity;
-    public Vector3 offset;
+    public float3 offset;
     // public AudioClip soundEffect;
     // public AbilitySpawnable spawnOnDestroy;
-    public Vector3 spawnOnDestroySize;
+    public float3 spawnOnDestroySize;
     public int spawnOnDestroyDamage;
 
 }

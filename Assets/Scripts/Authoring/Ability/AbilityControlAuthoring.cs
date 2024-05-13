@@ -42,7 +42,7 @@ public class AbilityControlAuthoring : MonoBehaviour
 }
 
 [Serializable]
-public struct AbilityControlComponent : IComponentData
+public struct AbilityControlComponent : IComponentData, IEnableableComponent
 {
     public Entity attackTransform;
     public LayerMask damageMask;
