@@ -6,13 +6,14 @@ using Unity.Mathematics;
 using System;
 using AutoAuthoring;
 using Unity.Transforms;
+using Unity.Collections;
 
 public class AbilityControlAuthoring : MonoBehaviour
 {
     public Transform attackTransform;
     public LayerMask damageMask;
     // public AbilityComponent currentAbility;
-    public List<AbilityComponent> abilities = new List<AbilityComponent>();
+    public List<AbilityConfig> abilities = new List<AbilityConfig>();
     public GameObject abilityTriggerPrefab;
 
     class Baker : Baker<AbilityControlAuthoring>
@@ -23,10 +24,26 @@ public class AbilityControlAuthoring : MonoBehaviour
             var abilities = AddBuffer<AbilityRuntimeBufferElement>(entity);
             foreach (var ability in authoring.abilities)
             {
+                var builder = new BlobBuilder(Allocator.Temp);
+                ref ElementalVFX elements = ref builder.ConstructRoot<ElementalVFX>();
+
+                var vfxBuilder = builder.Allocate(ref elements.values, GameConstant.ElementalTypeCount);
+                var arr = new NativeArray<Entity>(GameConstant.ElementalTypeCount, Allocator.Persistent);
+
+                for (int i = 0; i < vfxBuilder.Length; ++i)
+                {
+                    vfxBuilder[i] = GetEntity(ability.elementalsPrefabs[i], TransformUsageFlags.Dynamic);
+                    arr[i] = GetEntity(ability.elementalsPrefabs[i], TransformUsageFlags.Dynamic);
+                }
+                var prefabs = ability.elementalsPrefabs;
                 abilities.Add(new AbilityRuntimeBufferElement()
                 {
-                    value = ability
+                    value = ability.value,
+                    elementalsPrefabs = builder.CreateBlobAssetReference<ElementalVFX>(Allocator.Persistent),
+                    vfxPrefabs = arr,
+                    vfxPrefab = GetEntity(prefabs[0], TransformUsageFlags.Dynamic)
                 });
+                builder.Dispose();
             }
 
             AddComponent(entity, new AbilityControlComponent()
@@ -39,6 +56,15 @@ public class AbilityControlAuthoring : MonoBehaviour
 
         }
     }
+
+    private void OnValidate()
+    {
+
+        for (int i = 0; i < abilities.Count; ++i)
+        {
+            if (abilities[i].elementalsPrefabs.Length != GameConstant.ElementalTypeCount) Array.Resize(ref abilities[i].elementalsPrefabs, GameConstant.ElementalTypeCount);
+        }
+    }
 }
 
 [Serializable]
@@ -47,6 +73,14 @@ public struct AbilityControlComponent : IComponentData, IEnableableComponent
     public Entity attackTransform;
     public LayerMask damageMask;
     public float3 targetPosition;
-    public AbilityRuntimeBufferElement currentAbility;
+    // public AbilityRuntimeBufferElement currentAbility;
     public Entity abilityTriggerPrefab;
+}
+
+
+[Serializable]
+public class AbilityConfig
+{
+    public AbilityComponent value;
+    [LabeledArray(typeof(Elemental))] public GameObject[] elementalsPrefabs;
 }

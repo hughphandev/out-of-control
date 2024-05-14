@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using AutoAuthoring;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AbilityAuthoring : AutoAuthoring<AbilityComponent> { }
@@ -35,15 +37,19 @@ public struct AbilityComponent : IComponentData
     // public AbilitySpawnable spawnOnDestroy;
     public float3 spawnOnDestroySize;
     public int spawnOnDestroyDamage;
-
+    // public NativeArray<Entity> elementals;
 }
 
+[ChunkSerializable]
 public struct AbilityRuntimeBufferElement : IBufferElementData
 {
     public AbilityComponent value;
+    public BlobAssetReference<ElementalVFX> elementalsPrefabs;
+    public NativeArray<Entity> vfxPrefabs;
+    public Entity vfxPrefab;
     public float timer;
 
-    public AbilityRuntimeBufferElement(AbilityRuntimeBufferElement value)
+    public AbilityRuntimeBufferElement(ref AbilityRuntimeBufferElement value)
     {
         this = value;
     }

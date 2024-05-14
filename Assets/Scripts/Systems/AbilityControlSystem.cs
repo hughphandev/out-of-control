@@ -28,6 +28,12 @@ public partial struct AbilityControlSystem : ISystem
                     {
                         var currentTriggerEntity = ecb.Instantiate(abilityControl.ValueRO.abilityTriggerPrefab);
                         var attackL2W = state.EntityManager.GetComponentData<LocalToWorld>(abilityControl.ValueRO.attackTransform);
+                        // ref var vfxs = ref abilities[i].elementalsPrefabs.Value;
+                        // var vfx = ecb.Instantiate(vfxs.values[(int)abilities[i].value.elemental]);
+                        // var vfx = ecb.Instantiate(abilities[i].vfxPrefabs[(int)abilities[i].value.elemental]);
+                        var vfx = ecb.Instantiate(abilities[i].vfxPrefab);
+                        ecb.AddComponent(vfx, new Parent() { Value = currentTriggerEntity });
+                        ecb.AppendToBuffer<LinkedEntityGroup>(currentTriggerEntity, new LinkedEntityGroup() { Value = vfx });
 
                         ecb.SetComponent(currentTriggerEntity, new AbilityTriggerComponent()
                         {

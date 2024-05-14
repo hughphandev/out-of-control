@@ -92,10 +92,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3379613334107953758}
-  - component: {fileID: 2840696409303015809}
-  - component: {fileID: 9198317027076662873}
   - component: {fileID: 3786507766810785849}
   - component: {fileID: 4902694948798369762}
+  - component: {fileID: 2840696409303015809}
+  - component: {fileID: 9198317027076662873}
   - component: {fileID: 5109183579421990384}
   m_Layer: 6
   m_Name: CubeEnemy
@@ -121,42 +121,6 @@ Transform:
   - {fileID: 5094294624840878966}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2840696409303015809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4305343461985674357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ad68c3fbd5c28a40912fd0c7266435f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InfoArray:
-    ComponentArray:
-    - AuthoringData:
-        hp: 0
-        shield: 0
-        hpRecovery: 0
-        experienceDrop: 0
-        pickUpRange: 0
-        attackSpeedMultiplier: 0
-      References: []
---- !u!114 &9198317027076662873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4305343461985674357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5f74d642b5a6e14abd46d6724144698, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  movementSpeed: 5
 --- !u!65 &3786507766810785849
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -205,6 +169,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2840696409303015809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4305343461985674357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad68c3fbd5c28a40912fd0c7266435f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InfoArray:
+    ComponentArray:
+    - AuthoringData:
+        hp: 10
+        shield: 0
+        hpRecovery: 0
+        experienceDrop: 0
+        pickUpRange: 0
+        attackSpeedMultiplier: 0
+      References: []
+--- !u!114 &9198317027076662873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4305343461985674357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5f74d642b5a6e14abd46d6724144698, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  movementSpeed: 5
 --- !u!114 &5109183579421990384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,28 +222,42 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   abilities:
-  - tag: 0
-    coolDown: 1
-    damage: 1
-    shield: 0
-    projectileCount: 1
-    chainCount: 0
-    lifeTime: 0
-    range: 10
-    parent: 0
-    autoAim: 0
-    destroyFlag: 9
-    spawnLocation: 0
-    elemental: 0
-    hitboxShape: 1
-    hitboxSize: {x: 1, y: 1, z: 1}
-    velocity:
-      x: 0
-      y: 0
-      z: 10
-    offset: {x: 0, y: 0, z: 0}
-    spawnOnDestroySize: {x: 0, y: 0, z: 0}
-    spawnOnDestroyDamage: 0
+  - value:
+      tag: 0
+      coolDown: 1
+      damage: 1
+      shield: 0
+      projectileCount: 1
+      chainCount: 0
+      lifeTime: 0
+      range: 10
+      parent: 0
+      autoAim: 0
+      destroyFlag: 9
+      spawnLocation: 0
+      elemental: 0
+      hitboxShape: 1
+      hitboxSize: {x: 1, y: 1, z: 1}
+      velocity:
+        x: 0
+        y: 0
+        z: 10
+      offset:
+        x: 0
+        y: 0
+        z: 0
+      spawnOnDestroySize:
+        x: 0
+        y: 0
+        z: 0
+      spawnOnDestroyDamage: 0
+    elementalsPrefabs:
+    - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
+    - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
+    - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
+    - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
+    - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
+    - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
   abilityTriggerPrefab: {fileID: 5752708556412595559, guid: 6cff34366fd9ea142a39aff8122467ba,
     type: 3}
 --- !u!1 &6759719892956453033
@@ -271,7 +285,7 @@ Transform:
   m_GameObject: {fileID: 6759719892956453033}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.7}
+  m_LocalPosition: {x: 0, y: 0.7, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
