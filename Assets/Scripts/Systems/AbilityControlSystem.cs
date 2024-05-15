@@ -31,7 +31,7 @@ public partial struct AbilityControlSystem : ISystem
                         // ref var vfxs = ref abilities[i].elementalsPrefabs.Value;
                         // var vfx = ecb.Instantiate(vfxs.values[(int)abilities[i].value.elemental]);
                         // var vfx = ecb.Instantiate(abilities[i].vfxPrefabs[(int)abilities[i].value.elemental]);
-                        var vfx = ecb.Instantiate(abilities[i].vfxPrefab);
+                        var vfx = ecb.Instantiate(abilities[i].elementalsPrefabs[abilities[i].value.elemental]);
                         ecb.AddComponent(vfx, new Parent() { Value = currentTriggerEntity });
                         ecb.AppendToBuffer<LinkedEntityGroup>(currentTriggerEntity, new LinkedEntityGroup() { Value = vfx });
 

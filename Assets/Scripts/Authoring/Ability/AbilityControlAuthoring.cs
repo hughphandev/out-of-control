@@ -20,30 +20,21 @@ public class AbilityControlAuthoring : MonoBehaviour
     {
         public override void Bake(AbilityControlAuthoring authoring)
         {
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            var entity = GetEntity(TransformUsageFlags.None);
             var abilities = AddBuffer<AbilityRuntimeBufferElement>(entity);
             foreach (var ability in authoring.abilities)
             {
-                var builder = new BlobBuilder(Allocator.Temp);
-                ref ElementalVFX elements = ref builder.ConstructRoot<ElementalVFX>();
-
-                var vfxBuilder = builder.Allocate(ref elements.values, GameConstant.ElementalTypeCount);
-                var arr = new NativeArray<Entity>(GameConstant.ElementalTypeCount, Allocator.Persistent);
-
-                for (int i = 0; i < vfxBuilder.Length; ++i)
+                ElementalVFX elements = new ElementalVFX();
+                for (int i = 0; i < ability.elementalsPrefabs.Length; ++i)
                 {
-                    vfxBuilder[i] = GetEntity(ability.elementalsPrefabs[i], TransformUsageFlags.Dynamic);
-                    arr[i] = GetEntity(ability.elementalsPrefabs[i], TransformUsageFlags.Dynamic);
+                    elements[(Elemental)i] = GetEntity(ability.elementalsPrefabs[i], TransformUsageFlags.None);
                 }
                 var prefabs = ability.elementalsPrefabs;
                 abilities.Add(new AbilityRuntimeBufferElement()
                 {
                     value = ability.value,
-                    elementalsPrefabs = builder.CreateBlobAssetReference<ElementalVFX>(Allocator.Persistent),
-                    vfxPrefabs = arr,
-                    vfxPrefab = GetEntity(prefabs[0], TransformUsageFlags.Dynamic)
+                    elementalsPrefabs = elements,
                 });
-                builder.Dispose();
             }
 
             AddComponent(entity, new AbilityControlComponent()
@@ -51,7 +42,7 @@ public class AbilityControlAuthoring : MonoBehaviour
                 attackTransform = GetEntity(authoring.attackTransform.gameObject, TransformUsageFlags.Dynamic),
                 damageMask = authoring.damageMask,
                 // currentAbility = new AbilityRuntimeBufferElement() { value = authoring.currentAbility },
-                abilityTriggerPrefab = GetEntity(authoring.abilityTriggerPrefab, TransformUsageFlags.Dynamic),
+                abilityTriggerPrefab = GetEntity(authoring.abilityTriggerPrefab, TransformUsageFlags.None),
             });
 
         }

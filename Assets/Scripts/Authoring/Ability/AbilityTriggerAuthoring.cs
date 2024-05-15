@@ -13,7 +13,7 @@ public class AbilityTriggerAuthoring : MonoBehaviour
     {
         public override void Bake(AbilityTriggerAuthoring authoring)
         {
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            var entity = GetEntity(TransformUsageFlags.None);
             AddComponent(entity, new AbilityTriggerComponent());
         }
     }

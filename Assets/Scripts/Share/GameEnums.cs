@@ -1,4 +1,6 @@
 using System;
+using Unity.Entities;
+using UnityEngine;
 
 public enum HitboxShape
 {
@@ -53,4 +55,75 @@ public enum Elemental : int
     Lighting,
     Earth,
     Water,
+}
+
+
+[Serializable]
+
+public struct ElementalVFX
+{
+    public Entity Normal;
+    public Entity Fire;
+    public Entity Wind;
+    public Entity Lightning;
+    public Entity Earth;
+    public Entity Water;
+
+    public Entity this[Elemental key]
+    {
+        get => this[(int)key];
+        set => this[(int)key] = value;
+    }
+
+    public Entity this[int key]
+    {
+        get
+        {
+            switch (key)
+            {
+                case 0:
+                    return Normal;
+                case 1:
+                    return Fire;
+                case 2:
+                    return Wind;
+                case 3:
+                    return Lightning;
+                case 4:
+                    return Earth;
+                case 5:
+                    return Water;
+                default:
+                    Debug.LogError($"Index {key} out of bound!");
+                    return default;
+            }
+        }
+        set
+        {
+            switch (key)
+            {
+                case 0:
+                    Normal = value;
+                    return;
+                case 1:
+                    Fire = value;
+                    return;
+                case 2:
+                    Wind = value;
+                    return;
+                case 3:
+                    Lightning = value;
+                    return;
+                case 4:
+                    Earth = value;
+                    return;
+                case 5:
+                    Water = value;
+                    return;
+                default:
+                    Debug.LogError($"Index {key} out of bound!");
+                    return;
+            }
+        }
+    }
 }

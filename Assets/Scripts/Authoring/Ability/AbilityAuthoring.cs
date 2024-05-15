@@ -44,9 +44,7 @@ public struct AbilityComponent : IComponentData
 public struct AbilityRuntimeBufferElement : IBufferElementData
 {
     public AbilityComponent value;
-    public BlobAssetReference<ElementalVFX> elementalsPrefabs;
-    public NativeArray<Entity> vfxPrefabs;
-    public Entity vfxPrefab;
+    public ElementalVFX elementalsPrefabs;
     public float timer;
 
     public AbilityRuntimeBufferElement(ref AbilityRuntimeBufferElement value)

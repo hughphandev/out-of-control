@@ -12,7 +12,7 @@ public class DelayedDestroyAuthoring : MonoBehaviour
     {
         public override void Bake(DelayedDestroyAuthoring authoring)
         {
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            var entity = GetEntity(TransformUsageFlags.None);
             AddComponent(entity, new DelayedDestroyComponent()
             {
                 entity = entity,
