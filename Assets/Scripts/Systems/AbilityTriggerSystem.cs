@@ -33,39 +33,39 @@ public partial struct AbilityTriggerSystem : ISystem
                 ecb.DestroyEntity(entity);
             }
 
-            if (ability.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnHit))
+            float3 size = ability.hitboxSize;
+            var radius = math.max(size.x, math.max(size.y, size.z)) / 2;
+            NativeList<ColliderCastHit> hits = new NativeList<ColliderCastHit>(Allocator.Temp);
+            var filter = Utils.LayerMaskToFilter(abilityTrigger.ValueRO.mask, abilityTrigger.ValueRO.mask);
+            switch (ability.hitboxShape)
             {
-                float3 size = ability.hitboxSize;
-                var radius = math.max(size.x, math.max(size.y, size.z)) / 2;
-                NativeList<ColliderCastHit> hits = new NativeList<ColliderCastHit>(Allocator.Temp);
-                var filter = Utils.LayerMaskToFilter(abilityTrigger.ValueRO.mask, abilityTrigger.ValueRO.mask);
-                switch (ability.hitboxShape)
-                {
-                    case HitboxShape.Box:
-                        physicsWorld.BoxCastAll(transform.ValueRO.Position, transform.ValueRO.Rotation, ability.hitboxSize / 2, transform.ValueRO.Forward(), 1, ref hits, filter);
-                        break;
-                    case HitboxShape.Sphere:
-                        physicsWorld.SphereCastAll(transform.ValueRO.Position, radius, float3.zero, 1, ref hits, filter);
-                        break;
-                    default:
-                        Debug.LogError("Hitbox Shape Unhandled!");
-                        break;
-                }
-                if (hits.Length > 0)
+                case HitboxShape.Box:
+                    physicsWorld.BoxCastAll(transform.ValueRO.Position, transform.ValueRO.Rotation, ability.hitboxSize / 2, transform.ValueRO.Forward(), 1, ref hits, filter);
+                    break;
+                case HitboxShape.Sphere:
+                    physicsWorld.SphereCastAll(transform.ValueRO.Position, radius, float3.zero, 1, ref hits, filter);
+                    break;
+                default:
+                    Debug.LogError("Hitbox Shape Unhandled!");
+                    break;
+            }
+            if (hits.Length > 0)
+            {
+                if (ability.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnHit))
                 {
                     ecb.DestroyEntity(entity);
-                    foreach (var hit in hits)
+                }
+                foreach (var hit in hits)
+                {
+                    if (SystemAPI.HasComponent<CharacterResourceComponent>(hit.Entity))
                     {
-                        if (SystemAPI.HasComponent<CharacterResourceComponent>(hit.Entity))
-                        {
-                            var resource = SystemAPI.GetComponent<CharacterResourceComponent>(hit.Entity);
-                            resource.TakeDamage(ability.damage, ability.elemental);
-                            ecb.SetComponent<CharacterResourceComponent>(hit.Entity, resource);
-                        }
+                        var resource = SystemAPI.GetComponent<CharacterResourceComponent>(hit.Entity);
+                        resource.TakeDamage(ability.damage, ability.elemental);
+                        SystemAPI.SetComponent<CharacterResourceComponent>(hit.Entity, resource);
                     }
                 }
-                hits.Dispose();
             }
+            hits.Dispose();
         }
     }
 }

@@ -20,7 +20,7 @@ public static class Utils
         return filter;
     }
 
-    public static void TakeDamage(this CharacterResourceComponent resource, float damage, Elemental elemental)
+    public static void TakeDamage(this ref CharacterResourceComponent resource, float damage, Elemental elemental)
     {
         resource.hp -= damage;
     }
