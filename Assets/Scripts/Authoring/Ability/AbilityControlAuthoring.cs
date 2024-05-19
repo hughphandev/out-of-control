@@ -13,7 +13,7 @@ public class AbilityControlAuthoring : MonoBehaviour
     public Transform attackTransform;
     public LayerMask damageMask;
     // public AbilityComponent currentAbility;
-    public List<AbilityConfig> abilities = new List<AbilityConfig>();
+    public List<AbilitySO> abilities = new List<AbilitySO>();
     public GameObject abilityTriggerPrefab;
 
     class Baker : Baker<AbilityControlAuthoring>
@@ -47,15 +47,6 @@ public class AbilityControlAuthoring : MonoBehaviour
 
         }
     }
-
-    private void OnValidate()
-    {
-
-        for (int i = 0; i < abilities.Count; ++i)
-        {
-            if (abilities[i].elementalsPrefabs.Length != GameConstant.ElementalTypeCount) Array.Resize(ref abilities[i].elementalsPrefabs, GameConstant.ElementalTypeCount);
-        }
-    }
 }
 
 [Serializable]
@@ -66,12 +57,4 @@ public struct AbilityControlComponent : IComponentData, IEnableableComponent
     public float3 targetPosition;
     // public AbilityRuntimeBufferElement currentAbility;
     public Entity abilityTriggerPrefab;
-}
-
-
-[Serializable]
-public class AbilityConfig
-{
-    public AbilityComponent value;
-    [LabeledArray(typeof(Elemental))] public GameObject[] elementalsPrefabs;
 }

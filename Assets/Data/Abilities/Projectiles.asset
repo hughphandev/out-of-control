@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f668fc0e622007544a62d5f312be39c5, type: 3}
+  m_Name: Projectiles
+  m_EditorClassIdentifier: 
+  value:
+    tag: 0
+    coolDown: 1
+    damage: 1
+    shield: 0
+    projectileCount: 1
+    chainCount: 0
+    lifeTime: 0
+    range: 20
+    parent: 0
+    autoAim: 0
+    destroyFlag: 9
+    spawnLocation: 0
+    elemental: 0
+    hitboxShape: 1
+    hitboxSize: {x: 1, y: 1, z: 1}
+    velocity:
+      x: 0
+      y: 0
+      z: 20
+    offset:
+      x: 0
+      y: 0
+      z: 0
+    spawnOnDestroySize:
+      x: 0
+      y: 0
+      z: 0
+    spawnOnDestroyDamage: 0
+  elementalsPrefabs:
+  - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
+  - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
+  - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
+  - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
+  - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
+  - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}

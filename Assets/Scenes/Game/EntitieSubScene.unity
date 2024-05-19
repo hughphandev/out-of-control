@@ -179,42 +179,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   abilities:
-  - value:
-      tag: 0
-      coolDown: 1
-      damage: 1
-      shield: 0
-      projectileCount: 3
-      chainCount: 0
-      lifeTime: 0
-      range: 20
-      parent: 0
-      autoAim: 0
-      destroyFlag: 9
-      spawnLocation: 0
-      elemental: 0
-      hitboxShape: 1
-      hitboxSize: {x: 1, y: 1, z: 1}
-      velocity:
-        x: 0
-        y: 0
-        z: 20
-      offset:
-        x: 0
-        y: 0
-        z: 0
-      spawnOnDestroySize:
-        x: 0
-        y: 0
-        z: 0
-      spawnOnDestroyDamage: 0
-    elementalsPrefabs:
-    - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
-    - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
-    - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
-    - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
-    - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
-    - {fileID: 8963677554101382575, guid: ead6851d4527a8a4b9e624389cda63ae, type: 3}
+  - {fileID: 11400000, guid: 93f5b51df524d3a49b2f25790a0cb319, type: 2}
   abilityTriggerPrefab: {fileID: 5752708556412595559, guid: 6cff34366fd9ea142a39aff8122467ba,
     type: 3}
 --- !u!54 &27361720

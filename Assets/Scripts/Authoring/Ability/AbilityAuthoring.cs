@@ -37,7 +37,6 @@ public struct AbilityComponent : IComponentData
     // public AbilitySpawnable spawnOnDestroy;
     public float3 spawnOnDestroySize;
     public int spawnOnDestroyDamage;
-    // public NativeArray<Entity> elementals;
 }
 
 [ChunkSerializable]
