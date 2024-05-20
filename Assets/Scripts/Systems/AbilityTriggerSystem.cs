@@ -25,7 +25,7 @@ public partial struct AbilityTriggerSystem : ISystem
     {
         var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
         var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
-        foreach ((var abilityTrigger, var transform, var entity) in SystemAPI.Query<RefRO<AbilityTriggerComponent>, RefRO<LocalTransform>>().WithEntityAccess())
+        foreach ((var abilityTrigger, var transform, var physicVel, var entity) in SystemAPI.Query<RefRO<AbilityTriggerComponent>, RefRW<LocalTransform>, RefRW<PhysicsVelocity>>().WithEntityAccess())
         {
             AbilityComponent ability = abilityTrigger.ValueRO.ability;
             if (ability.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnOutOfRange) && math.distance(transform.ValueRO.Position, abilityTrigger.ValueRO.origin) > ability.range)
@@ -33,10 +33,23 @@ public partial struct AbilityTriggerSystem : ISystem
                 ecb.DestroyEntity(entity);
             }
 
+            var filter = Utils.LayerMaskToFilter(abilityTrigger.ValueRO.mask, abilityTrigger.ValueRO.mask);
+
+            if (abilityTrigger.ValueRO.ability.autoAim)
+            {
+                NativeList<ColliderCastHit> aimHits = new NativeList<ColliderCastHit>(Allocator.Temp);
+
+                if (physicsWorld.SphereCastAll(transform.ValueRO.Position, ability.range, float3.zero, 1, ref aimHits, filter))
+                {
+                    var forward = Vector3.RotateTowards(transform.ValueRO.Forward(), aimHits[0].Position - transform.ValueRO.Position, math.PI * SystemAPI.Time.DeltaTime, 0);
+                    transform.ValueRW.Rotation = quaternion.LookRotation(forward, Vector3.up);
+                }
+                aimHits.Dispose();
+            }
+
             float3 size = ability.hitboxSize;
             var radius = math.max(size.x, math.max(size.y, size.z)) / 2;
             NativeList<ColliderCastHit> hits = new NativeList<ColliderCastHit>(Allocator.Temp);
-            var filter = Utils.LayerMaskToFilter(abilityTrigger.ValueRO.mask, abilityTrigger.ValueRO.mask);
             switch (ability.hitboxShape)
             {
                 case HitboxShape.Box:
@@ -65,6 +78,7 @@ public partial struct AbilityTriggerSystem : ISystem
                     }
                 }
             }
+            physicVel.ValueRW.Linear = math.mul(transform.ValueRO.Rotation, ability.velocity);
             hits.Dispose();
         }
     }

@@ -47,14 +47,6 @@ public partial struct AbilityControlSystem : ISystem
                             Scale = 1,
                         });
 
-                        if (!abilities[i].value.velocity.Equals(float3.zero))
-                        {
-                            ecb.AddComponent(currentTriggerEntity, new PhysicsVelocity()
-                            {
-                                Linear = math.mul(rot, abilities[i].value.velocity)
-                            });
-                        }
-
                         if (abilities[i].value.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnLifeTimeEnd))
                         {
                             ecb.AddComponent(currentTriggerEntity, new DelayedDestroyComponent()
