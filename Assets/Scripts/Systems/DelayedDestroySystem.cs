@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
@@ -18,6 +19,7 @@ public partial struct DelayedDestroySystem : ISystem
 
     }
 
+    [BurstCompile]
     void OnUpdate(ref SystemState state)
     {
         var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);

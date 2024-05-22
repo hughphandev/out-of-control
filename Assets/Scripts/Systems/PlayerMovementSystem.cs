@@ -4,6 +4,7 @@ using Unity.Transforms;
 using UnityEngine;
 using Unity.Physics;
 using UnityEngine.InputSystem;
+using Unity.Burst;
 
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 public partial class PlayerMovementSystem : SystemBase
@@ -22,6 +23,7 @@ public partial class PlayerMovementSystem : SystemBase
         controls.Disable();
     }
 
+    [BurstCompile]
     protected override void OnUpdate()
     {
         foreach (var (mover, transform, velocity) in SystemAPI.Query<RefRW<MoverComponent>, RefRW<LocalTransform>, RefRW<PhysicsVelocity>>())

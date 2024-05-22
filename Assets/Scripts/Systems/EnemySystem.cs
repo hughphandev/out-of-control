@@ -3,9 +3,12 @@ using Unity.Physics;
 using Unity.Transforms;
 using Unity.Mathematics;
 using UnityEngine;
+using Unity.Burst;
 
 public partial struct EnemySystem : ISystem
 {
+
+    [BurstCompile]
     void OnUpdate(ref SystemState state)
     {
         var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();

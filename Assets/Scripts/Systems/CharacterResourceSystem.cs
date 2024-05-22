@@ -3,9 +3,12 @@ using Unity.Physics;
 using Unity.Transforms;
 using Unity.Mathematics;
 using UnityEngine;
+using Unity.Burst;
 
 public partial struct CharacterResourceSystem : ISystem
 {
+
+    [BurstCompile]
     void OnUpdate(ref SystemState state)
     {
         var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
