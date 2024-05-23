@@ -847,7 +847,8 @@ MonoBehaviour:
   player: {fileID: 27361717}
   minDistance: 20
   maxDistance: 40
-  delay: 5
+  delay: 1e+26
+  batch: 100
 --- !u!4 &1540150936
 Transform:
   m_ObjectHideFlags: 0

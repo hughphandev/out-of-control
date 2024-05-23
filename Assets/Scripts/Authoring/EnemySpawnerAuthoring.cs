@@ -10,6 +10,7 @@ public class EnemySpawnerAuthoring : MonoBehaviour
     public float minDistance;
     public float maxDistance;
     public float delay;
+    public int batch;
     private class Baker : Baker<EnemySpawnerAuthoring>
     {
         public override void Bake(EnemySpawnerAuthoring authoring)
@@ -22,6 +23,7 @@ public class EnemySpawnerAuthoring : MonoBehaviour
                 minDistance = authoring.minDistance,
                 maxDistance = authoring.maxDistance,
                 delay = authoring.delay,
+                batch = authoring.batch,
             });
         }
     }
@@ -36,4 +38,5 @@ public struct EnemySpawnerComponent : IComponentData
     public float maxDistance;
     public float delay;
     public float timer;
+    public int batch;
 }

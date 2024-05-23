@@ -26,21 +26,34 @@ public partial struct AbilityTriggerSystem : ISystem
 
     }
 
+    [BurstCompile]
     void OnUpdate(ref SystemState state)
     {
-        var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
-        var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
+        var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
+        var physicsWorld = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
 
-        state.Dependency = new AbilityTriggerJob()
+        new AbilityTriggerMoveJob()
         {
-            ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter(),
-            physicsWorld = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld,
-            entityManager = state.EntityManager,
+            deltaTime = SystemAPI.Time.DeltaTime,
+        }.ScheduleParallel();
+
+        new AbilityTriggerCollisionJob()
+        {
+            ecb = ecb,
+            physicsWorld = physicsWorld,
+            resources = state.GetComponentLookup<CharacterResourceComponent>(true),
+            deltaTime = SystemAPI.Time.DeltaTime,
+        }.ScheduleParallel();
+
+        new AbilityTriggerJob()
+        {
+            ecb = ecb,
+            physicsWorld = physicsWorld,
+            resources = state.GetComponentLookup<CharacterResourceComponent>(true),
             deltaTime = SystemAPI.Time.DeltaTime,
 
-        }.Schedule(state.Dependency);
+        }.ScheduleParallel();
 
-        state.CompleteDependency();
 
         // foreach ((var abilityTrigger, var transform, var physicVel, var entity) in SystemAPI.Query<RefRO<AbilityTriggerComponent>, RefRW<LocalTransform>, RefRW<PhysicsVelocity>>().WithEntityAccess())
         // {
@@ -104,14 +117,12 @@ public partial struct AbilityTriggerSystem : ISystem
 [BurstCompile]
 public partial struct AbilityTriggerJob : IJobEntity
 {
-
     public EntityCommandBuffer.ParallelWriter ecb;
-    public PhysicsWorld physicsWorld;
-    public EntityManager entityManager;
+    [ReadOnly] public PhysicsWorld physicsWorld;
+    [ReadOnly] public ComponentLookup<CharacterResourceComponent> resources;
     public float deltaTime;
 
-    [BurstCompile]
-    public void Execute(in AbilityTriggerComponent abilityTrigger, ref LocalTransform transform, ref PhysicsVelocity physicVel, in Entity entity, [EntityIndexInQuery] int sortKey)
+    public void Execute(in AbilityTriggerComponent abilityTrigger, ref LocalTransform transform, in Entity entity, [EntityIndexInQuery] int sortKey)
     {
         AbilityComponent ability = abilityTrigger.ability;
         if (ability.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnOutOfRange) && math.distance(transform.Position, abilityTrigger.origin) > ability.range)
@@ -132,9 +143,34 @@ public partial struct AbilityTriggerJob : IJobEntity
             }
             aimHits.Dispose();
         }
+    }
+}
 
+[BurstCompile]
+public partial struct AbilityTriggerMoveJob : IJobEntity
+{
+    public float deltaTime;
+
+    public void Execute(in AbilityTriggerComponent abilityTrigger, ref LocalTransform transform, ref PhysicsVelocity physicVel)
+    {
+        physicVel.Linear = math.mul(transform.Rotation, abilityTrigger.ability.velocity);
+    }
+}
+
+[BurstCompile]
+public partial struct AbilityTriggerCollisionJob : IJobEntity
+{
+    public EntityCommandBuffer.ParallelWriter ecb;
+    [ReadOnly] public PhysicsWorld physicsWorld;
+    [ReadOnly] public ComponentLookup<CharacterResourceComponent> resources;
+    public float deltaTime;
+
+    public void Execute(in AbilityTriggerComponent abilityTrigger, ref LocalTransform transform, in Entity entity, [EntityIndexInQuery] int sortKey)
+    {
+        AbilityComponent ability = abilityTrigger.ability;
         float3 size = ability.hitboxSize;
         var radius = math.max(size.x, math.max(size.y, size.z)) / 2;
+        var filter = Utils.LayerMaskToFilter(abilityTrigger.mask, abilityTrigger.mask);
         NativeList<ColliderCastHit> hits = new NativeList<ColliderCastHit>(Allocator.TempJob);
         switch (ability.hitboxShape)
         {
@@ -156,15 +192,11 @@ public partial struct AbilityTriggerJob : IJobEntity
             }
             foreach (var hit in hits)
             {
-                if (entityManager.HasComponent<CharacterResourceComponent>(hit.Entity))
-                {
-                    var resource = entityManager.GetComponentData<CharacterResourceComponent>(hit.Entity);
-                    resource.TakeDamage(ability.damage, ability.elemental);
-                    entityManager.SetComponentData<CharacterResourceComponent>(hit.Entity, resource);
-                }
+                var resource = resources[hit.Entity];
+                resource.TakeDamage(ability.damage, ability.elemental);
+                ecb.SetComponent<CharacterResourceComponent>(sortKey, hit.Entity, resource);
             }
         }
-        physicVel.Linear = math.mul(transform.Rotation, ability.velocity);
         hits.Dispose();
     }
 }
