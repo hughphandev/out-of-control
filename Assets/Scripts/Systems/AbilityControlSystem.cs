@@ -22,7 +22,7 @@ public partial struct AbilityControlSystem : ISystem
             var abilities = abilitiesBuffer;
             for (int i = 0; i < abilities.Length; i++)
             {
-                if (abilities[i].Equals(default)) continue;
+                if (abilities[i].value.projectileCount == 0) continue;
                 if (abilities[i].timer < 0)
                 {
                     int projectileCount = abilities[i].value.projectileCount;
@@ -49,7 +49,7 @@ public partial struct AbilityControlSystem : ISystem
                             Scale = 1,
                         });
 
-                        if (abilities[i].value.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnLifeTimeEnd))
+                        if (Utils.OverlapFlag((uint)abilities[i].value.destroyFlag, (uint)AbilityDestroyFlag.OnLifeTimeEnd))
                         {
                             ecb.AddComponent(currentTriggerEntity, new DelayedDestroyComponent()
                             {

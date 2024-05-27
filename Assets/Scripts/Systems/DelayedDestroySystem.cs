@@ -9,16 +9,6 @@ using UnityEngine;
 
 public partial struct DelayedDestroySystem : ISystem
 {
-    void OnCreate(ref SystemState state)
-    {
-
-    }
-
-    void OnDestroy(ref SystemState state)
-    {
-
-    }
-
     [BurstCompile]
     void OnUpdate(ref SystemState state)
     {

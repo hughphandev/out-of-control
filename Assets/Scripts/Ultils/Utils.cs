@@ -6,9 +6,9 @@ using UnityEngine;
 
 public static class Utils
 {
-    public static bool OverlapFlag(this Enum first, Enum second)
+    public static bool OverlapFlag(uint first, uint second)
     {
-        return (Convert.ToInt32(first) & Convert.ToInt32(second)) != 0;
+        return (first & second) != 0;
     }
     public static CollisionFilter LayerMaskToFilter(LayerMask belongMask, LayerMask collideMask)
     {

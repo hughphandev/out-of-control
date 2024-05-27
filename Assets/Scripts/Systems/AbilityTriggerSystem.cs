@@ -16,9 +16,10 @@ using UnityEngine;
 // [UpdateBefore(typeof(PhysicsSimulationGroup))]
 public partial struct AbilityTriggerSystem : ISystem
 {
+    ComponentLookup<CharacterResourceComponent> resources;
     void OnCreate(ref SystemState state)
     {
-
+        resources = state.GetComponentLookup<CharacterResourceComponent>(true);
     }
 
     void OnDestroy(ref SystemState state)
@@ -31,6 +32,7 @@ public partial struct AbilityTriggerSystem : ISystem
     {
         var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
         var physicsWorld = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
+        resources.Update(ref state);
 
         new AbilityTriggerMoveJob()
         {
@@ -41,7 +43,7 @@ public partial struct AbilityTriggerSystem : ISystem
         {
             ecb = ecb,
             physicsWorld = physicsWorld,
-            resources = state.GetComponentLookup<CharacterResourceComponent>(true),
+            resources = resources,
             deltaTime = SystemAPI.Time.DeltaTime,
         }.ScheduleParallel();
 
@@ -49,68 +51,10 @@ public partial struct AbilityTriggerSystem : ISystem
         {
             ecb = ecb,
             physicsWorld = physicsWorld,
-            resources = state.GetComponentLookup<CharacterResourceComponent>(true),
+            resources = resources,
             deltaTime = SystemAPI.Time.DeltaTime,
 
         }.ScheduleParallel();
-
-
-        // foreach ((var abilityTrigger, var transform, var physicVel, var entity) in SystemAPI.Query<RefRO<AbilityTriggerComponent>, RefRW<LocalTransform>, RefRW<PhysicsVelocity>>().WithEntityAccess())
-        // {
-        //     AbilityComponent ability = abilityTrigger.ValueRO.ability;
-        //     if (ability.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnOutOfRange) && math.distance(transform.ValueRO.Position, abilityTrigger.ValueRO.origin) > ability.range)
-        //     {
-        //         ecb.DestroyEntity(entity);
-        //     }
-
-        //     var filter = Utils.LayerMaskToFilter(abilityTrigger.ValueRO.mask, abilityTrigger.ValueRO.mask);
-
-        //     if (abilityTrigger.ValueRO.ability.autoAim)
-        //     {
-        //         NativeList<ColliderCastHit> aimHits = new NativeList<ColliderCastHit>(Allocator.Temp);
-
-        //         if (physicsWorld.SphereCastAll(transform.ValueRO.Position, ability.range, float3.zero, 1, ref aimHits, filter))
-        //         {
-        //             var forward = Vector3.RotateTowards(transform.ValueRO.Forward(), aimHits[0].Position - transform.ValueRO.Position, math.PI * SystemAPI.Time.DeltaTime, 0);
-        //             transform.ValueRW.Rotation = quaternion.LookRotation(forward, Vector3.up);
-        //         }
-        //         aimHits.Dispose();
-        //     }
-
-        //     float3 size = ability.hitboxSize;
-        //     var radius = math.max(size.x, math.max(size.y, size.z)) / 2;
-        //     NativeList<ColliderCastHit> hits = new NativeList<ColliderCastHit>(Allocator.Temp);
-        //     switch (ability.hitboxShape)
-        //     {
-        //         case HitboxShape.Box:
-        //             physicsWorld.BoxCastAll(transform.ValueRO.Position, transform.ValueRO.Rotation, ability.hitboxSize / 2, transform.ValueRO.Forward(), 1, ref hits, filter);
-        //             break;
-        //         case HitboxShape.Sphere:
-        //             physicsWorld.SphereCastAll(transform.ValueRO.Position, radius, float3.zero, 1, ref hits, filter);
-        //             break;
-        //         default:
-        //             Debug.LogError("Hitbox Shape Unhandled!");
-        //             break;
-        //     }
-        //     if (hits.Length > 0)
-        //     {
-        //         if (ability.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnHit))
-        //         {
-        //             ecb.DestroyEntity(entity);
-        //         }
-        //         foreach (var hit in hits)
-        //         {
-        //             if (SystemAPI.HasComponent<CharacterResourceComponent>(hit.Entity))
-        //             {
-        //                 var resource = SystemAPI.GetComponent<CharacterResourceComponent>(hit.Entity);
-        //                 resource.TakeDamage(ability.damage, ability.elemental);
-        //                 SystemAPI.SetComponent<CharacterResourceComponent>(hit.Entity, resource);
-        //             }
-        //         }
-        //     }
-        //     physicVel.ValueRW.Linear = math.mul(transform.ValueRO.Rotation, ability.velocity);
-        //     hits.Dispose();
-        // }
     }
 }
 
@@ -125,7 +69,7 @@ public partial struct AbilityTriggerJob : IJobEntity
     public void Execute(in AbilityTriggerComponent abilityTrigger, ref LocalTransform transform, in Entity entity, [EntityIndexInQuery] int sortKey)
     {
         AbilityComponent ability = abilityTrigger.ability;
-        if (ability.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnOutOfRange) && math.distance(transform.Position, abilityTrigger.origin) > ability.range)
+        if (Utils.OverlapFlag((uint)ability.destroyFlag, (uint)AbilityDestroyFlag.OnOutOfRange) && math.distance(transform.Position, abilityTrigger.origin) > ability.range)
         {
             ecb.DestroyEntity(sortKey, entity);
         }
@@ -186,7 +130,7 @@ public partial struct AbilityTriggerCollisionJob : IJobEntity
         }
         if (hits.Length > 0)
         {
-            if (ability.destroyFlag.OverlapFlag(AbilityDestroyFlag.OnHit))
+            if (Utils.OverlapFlag((uint)ability.destroyFlag, (uint)AbilityDestroyFlag.OnHit))
             {
                 ecb.DestroyEntity(sortKey, entity);
             }
@@ -200,3 +144,16 @@ public partial struct AbilityTriggerCollisionJob : IJobEntity
         hits.Dispose();
     }
 }
+
+// [UpdateInGroup(typeof(LateSimulationSystemGroup))]
+// public partial struct AbilityTriggerCleanUp : ISystem
+// {
+//     [BurstCompile]
+//     void OnUpdate(ref SystemState state)
+//     {
+//         var query = new EntityQueryBuilder(Allocator.Temp)
+//             .WithAll<Disabled>()
+//             .Build(ref state);
+//         state.EntityManager.DestroyEntity(query);
+//     }
+// }

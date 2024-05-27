@@ -8,12 +8,12 @@ using Unity.Burst;
 
 public partial class CameraFollowSystem : SystemBase
 {
+    [BurstCompile]
     protected override void OnUpdate()
     {
-        Entities.WithAll<PlayerComponent>().ForEach((ref LocalTransform transform) =>
-            {
-                GameObjectWorld.Instance.cameraFollow.position = transform.Position;
-            }).Run();
-
+        foreach (var transform in SystemAPI.Query<RefRO<LocalTransform>>().WithAll<PlayerComponent>())
+        {
+            GameObjectWorld.Instance.cameraFollow.position = transform.ValueRO.Position;
+        }
     }
 }
