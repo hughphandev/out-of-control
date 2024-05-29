@@ -20,6 +20,7 @@ public partial struct AbilityTriggerSystem : ISystem
     void OnCreate(ref SystemState state)
     {
         resources = state.GetComponentLookup<CharacterResourceComponent>(true);
+
     }
 
     void OnDestroy(ref SystemState state)
@@ -32,6 +33,7 @@ public partial struct AbilityTriggerSystem : ISystem
     {
         var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
         var physicsWorld = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
+        var grids = SystemAPI.GetSingleton<WorldGridComponent>().grids;
         resources.Update(ref state);
 
         new AbilityTriggerMoveJob()
@@ -79,7 +81,6 @@ public partial struct AbilityTriggerJob : IJobEntity
         if (abilityTrigger.ability.autoAim)
         {
             NativeList<ColliderCastHit> aimHits = new NativeList<ColliderCastHit>(Allocator.TempJob);
-
             if (physicsWorld.SphereCastAll(transform.Position, ability.range, float3.zero, 1, ref aimHits, filter))
             {
                 var forward = Vector3.RotateTowards(transform.Forward(), aimHits[0].Position - transform.Position, math.PI * deltaTime, 0);
