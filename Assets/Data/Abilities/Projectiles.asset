@@ -22,7 +22,7 @@ MonoBehaviour:
     lifeTime: 0
     range: 20
     parent: 0
-    autoAim: 1
+    autoAim: 0
     destroyFlag: 9
     spawnLocation: 0
     elemental: 0
