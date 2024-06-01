@@ -432,7 +432,7 @@ MonoBehaviour:
   minDistance: 20
   maxDistance: 40
   delay: 1e+26
-  batch: 100
+  batch: 1000
 --- !u!4 &681367580
 Transform:
   m_ObjectHideFlags: 0
