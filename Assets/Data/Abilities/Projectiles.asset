@@ -15,14 +15,14 @@ MonoBehaviour:
   value:
     tag: 0
     coolDown: 1
-    damage: 1
+    damage: 0
     shield: 0
     projectileCount: 1
     chainCount: 0
     lifeTime: 0
     range: 20
     parent: 0
-    autoAim: 1
+    autoAim: 0
     destroyFlag: 9
     spawnLocation: 0
     elemental: 0
