@@ -92,11 +92,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3379613334107953758}
-  - component: {fileID: 3786507766810785849}
   - component: {fileID: 4902694948798369762}
   - component: {fileID: 2840696409303015809}
   - component: {fileID: 9198317027076662873}
   - component: {fileID: 5109183579421990384}
+  - component: {fileID: 4637656066327359146}
   m_Layer: 6
   m_Name: CubeEnemy
   m_TagString: Untagged
@@ -121,27 +121,6 @@ Transform:
   - {fileID: 5094294624840878966}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &3786507766810785849
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4305343461985674357}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &4902694948798369762
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -225,6 +204,25 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 93f5b51df524d3a49b2f25790a0cb319, type: 2}
   abilityTriggerPrefab: {fileID: 5752708556412595559, guid: 6cff34366fd9ea142a39aff8122467ba,
     type: 3}
+--- !u!114 &4637656066327359146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4305343461985674357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 551b802fbf6351f47addfa587907aba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  belongTo:
+    serializedVersion: 2
+    m_Bits: 64
+  collideWith:
+    serializedVersion: 2
+    m_Bits: 0
+  radius: 1
 --- !u!1 &6759719892956453033
 GameObject:
   m_ObjectHideFlags: 0

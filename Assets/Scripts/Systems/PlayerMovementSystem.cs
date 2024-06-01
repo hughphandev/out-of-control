@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using Unity.Burst;
 
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
+[BurstCompile]
 public partial class PlayerMovementSystem : SystemBase
 {
     private Controls controls = null;

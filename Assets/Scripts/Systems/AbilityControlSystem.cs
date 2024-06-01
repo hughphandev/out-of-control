@@ -16,7 +16,7 @@ public partial struct AbilityControlSystem : ISystem
     [BurstCompile]
     void OnUpdate(ref SystemState state)
     {
-        foreach ((var abilityControl, var abilitiesBuffer, var transform) in SystemAPI.Query<RefRW<AbilityControlComponent>, DynamicBuffer<AbilityRuntimeBufferElement>, RefRW<LocalTransform>>())
+        foreach ((var abilityControl, var abilitiesBuffer, var collider, var transform) in SystemAPI.Query<RefRW<AbilityControlComponent>, DynamicBuffer<AbilityRuntimeBufferElement>, RefRO<WorldCircleCollider>, RefRW<LocalTransform>>())
         {
             var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
             var abilities = abilitiesBuffer;
@@ -37,8 +37,14 @@ public partial struct AbilityControlSystem : ISystem
                         ecb.SetComponent(currentTriggerEntity, new AbilityTriggerComponent()
                         {
                             ability = abilities[i].value,
-                            mask = abilityControl.ValueRO.damageMask,
                             origin = attackL2W.Position,
+                        });
+
+                        ecb.SetComponent(currentTriggerEntity, new WorldCircleCollider()
+                        {
+                            belongTo = collider.ValueRO.belongTo,
+                            collideWith = abilityControl.ValueRO.damageMask,
+                            radius = (abilities[i].value.hitboxSize.x + abilities[i].value.hitboxSize.z) / 4.0f,
                         });
 
                         var rot = math.mul(attackL2W.Rotation, quaternion.RotateY((j - (float)(projectileCount - 1) / 2) * (math.PI / 10.0f)));

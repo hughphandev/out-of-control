@@ -34,7 +34,7 @@ public partial struct WorldGridSystem : ISystem
         var grids = SystemAPI.GetSingleton<WorldGridComponent>().grids;
         grids.Clear();
 
-        foreach ((var l2w, Entity entity) in SystemAPI.Query<RefRO<LocalToWorld>>().WithEntityAccess())
+        foreach ((var l2w, Entity entity) in SystemAPI.Query<RefRO<LocalToWorld>>().WithEntityAccess().WithAll<WorldCircleCollider>())
         {
             grids.Add(new int2((int)l2w.ValueRO.Position.x, (int)l2w.ValueRO.Position.z), entity);
         }

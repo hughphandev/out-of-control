@@ -40,7 +40,7 @@ public class AbilityControlAuthoring : MonoBehaviour
             AddComponent(entity, new AbilityControlComponent()
             {
                 attackTransform = GetEntity(authoring.attackTransform.gameObject, TransformUsageFlags.Dynamic),
-                damageMask = authoring.damageMask,
+                damageMask = authoring.damageMask.value,
                 // currentAbility = new AbilityRuntimeBufferElement() { value = authoring.currentAbility },
                 abilityTriggerPrefab = GetEntity(authoring.abilityTriggerPrefab, TransformUsageFlags.None),
             });
@@ -53,7 +53,7 @@ public class AbilityControlAuthoring : MonoBehaviour
 public struct AbilityControlComponent : IComponentData, IEnableableComponent
 {
     public Entity attackTransform;
-    public LayerMask damageMask;
+    public int damageMask;
     public float3 targetPosition;
     // public AbilityRuntimeBufferElement currentAbility;
     public Entity abilityTriggerPrefab;
