@@ -33,7 +33,6 @@ public partial struct AbilityTriggerSystem : ISystem
     {
         var ecb = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
         var physicsWorld = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
-        var grids = SystemAPI.GetSingleton<WorldGridComponent>().grids;
         resources.Update(ref state);
 
         new AbilityTriggerMoveJob()
@@ -76,14 +75,23 @@ public partial struct AbilityTriggerJob : IJobEntity
             ecb.DestroyEntity(sortKey, entity);
         }
 
-        var filter = Utils.LayerMaskToFilter(abilityTrigger.mask, abilityTrigger.mask);
+        var filter = Utils.LayerMaskToFilter(abilityTrigger.layer, abilityTrigger.damageMask);
 
-        if (abilityTrigger.ability.autoAim)
+        if (abilityTrigger.ability.followingProjectile)
         {
-            NativeList<ColliderCastHit> aimHits = new NativeList<ColliderCastHit>(Allocator.TempJob);
-            if (physicsWorld.SphereCastAll(transform.Position, ability.range, float3.zero, 1, ref aimHits, filter))
+            NativeList<DistanceHit> aimHits = new NativeList<DistanceHit>(Allocator.TempJob);
+            if (physicsWorld.OverlapSphere(transform.Position, ability.range, ref aimHits, filter))
             {
-                var forward = Vector3.RotateTowards(transform.Forward(), aimHits[0].Position - transform.Position, math.PI * deltaTime, 0);
+                var nearest = aimHits[0];
+                foreach (var hit in aimHits)
+                {
+                    if (nearest.Distance > hit.Distance)
+                    {
+                        nearest = hit;
+                    }
+                }
+
+                var forward = Vector3.RotateTowards(transform.Forward(), nearest.Position - transform.Position, math.PI * deltaTime, 0);
                 transform.Rotation = quaternion.LookRotation(forward, Vector3.up);
             }
             aimHits.Dispose();
@@ -115,15 +123,15 @@ public partial struct AbilityTriggerCollisionJob : IJobEntity
         AbilityComponent ability = abilityTrigger.ability;
         float3 size = ability.hitboxSize;
         var radius = math.max(size.x, math.max(size.y, size.z)) / 2;
-        var filter = Utils.LayerMaskToFilter(abilityTrigger.mask, abilityTrigger.mask);
-        NativeList<ColliderCastHit> hits = new NativeList<ColliderCastHit>(Allocator.TempJob);
+        var filter = Utils.LayerMaskToFilter(abilityTrigger.damageMask, abilityTrigger.damageMask);
+        NativeList<DistanceHit> hits = new NativeList<DistanceHit>(Allocator.TempJob);
         switch (ability.hitboxShape)
         {
             case HitboxShape.Box:
-                physicsWorld.BoxCastAll(transform.Position, transform.Rotation, ability.hitboxSize / 2, transform.Forward(), 1, ref hits, filter);
+                physicsWorld.OverlapBox(transform.Position, transform.Rotation, ability.hitboxSize / 2, ref hits, filter);
                 break;
             case HitboxShape.Sphere:
-                physicsWorld.SphereCastAll(transform.Position, radius, float3.zero, 1, ref hits, filter);
+                physicsWorld.OverlapSphere(transform.Position, radius, ref hits, filter);
                 break;
             default:
                 Debug.LogError("Hitbox Shape Unhandled!");

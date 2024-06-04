@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using Unity.Burst;
 
+[BurstCompile]
 public partial class CameraFollowSystem : SystemBase
 {
     [BurstCompile]

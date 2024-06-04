@@ -22,7 +22,8 @@ public class AbilityTriggerAuthoring : MonoBehaviour
 [Serializable]
 public struct AbilityTriggerComponent : IComponentData
 {
-    public LayerMask mask;
+    public LayerMask layer;
+    public LayerMask damageMask;
     public float3 origin;
     public AbilityComponent ability;
     // [HideInInspector] public Extention[] extentions;

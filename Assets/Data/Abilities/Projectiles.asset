@@ -22,12 +22,15 @@ MonoBehaviour:
     lifeTime: 0
     range: 40
     parent: 0
-    autoAim: 1
+    followingProjectile: 1
     destroyFlag: 9
     spawnLocation: 0
     elemental: 0
     hitboxShape: 1
-    hitboxSize: {x: 1, y: 1, z: 1}
+    hitboxSize:
+      x: 1
+      y: 1
+      z: 1
     velocity:
       x: 0
       y: 0

@@ -24,14 +24,14 @@ public struct AbilityComponent : IComponentData
     public float range;
     public bool parent;
     // public bool allowAnimation;
-    public bool autoAim;
+    public bool followingProjectile;
     // public AnimationClip animation;
     // public AnimationProperty animationProperty;
     public AbilityDestroyFlag destroyFlag;
     public AbilitySpawnLocation spawnLocation;
     public Elemental elemental;
     public HitboxShape hitboxShape;
-    public Vector3 hitboxSize;
+    public float3 hitboxSize;
     public float3 velocity;
     public float3 offset;
     // public AudioClip soundEffect;

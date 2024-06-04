@@ -6,6 +6,7 @@ using Unity.Physics;
 using UnityEngine.InputSystem;
 using Unity.Burst;
 
+[BurstCompile]
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 public partial class PlayerMovementSystem : SystemBase
 {
